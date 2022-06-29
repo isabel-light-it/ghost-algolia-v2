@@ -36,7 +36,7 @@ const reduceFragmentsUnderHeadings = (accumulator, fragment) => {
 module.exports.fragmentTransformer = (recordAccumulator, node) => {
     let htmlFragments = Extractor
         // These are the top-level HTML elements that we keep - this results in a lot of fragments
-        .run(node.html, {cssSelector: `p,pre,td,li`})
+        .run(node.html, { cssSelector: `p,pre,td,li` })
         // Use the utility function to merge fragments so that there is one-per-heading
         .reduce(reduceFragmentsUnderHeadings, []);
 
@@ -60,7 +60,7 @@ module.exports.fragmentTransformer = (recordAccumulator, node) => {
 
         return [
             ...fragmentAccumulator,
-            {...node, ...fragment, objectID: objectID}
+            { ...node, ...fragment, objectID: objectID }
         ];
     }, []);
 
@@ -88,7 +88,9 @@ module.exports.transformToAlgoliaObject = (posts, ignoreSlugs) => {
             image: post.feature_image,
             title: post.title,
             tags: [],
-            authors: []
+            authors: [],
+            published_at: post.published_at,
+            custom_excerpt: post.custom_excerpt,
         };
 
         // If we have an array of slugs to ignore, and the current
@@ -101,13 +103,13 @@ module.exports.transformToAlgoliaObject = (posts, ignoreSlugs) => {
 
         if (post.tags && post.tags.length) {
             post.tags.forEach((tag) => {
-                algoliaPost.tags.push({name: tag.name, slug: tag.slug});
+                algoliaPost.tags.push({ name: tag.name, slug: tag.slug });
             });
         }
 
         if (post.authors && post.authors.length) {
             post.authors.forEach((author) => {
-                algoliaPost.authors.push({name: author.name, slug: author.slug});
+                algoliaPost.authors.push({ name: author.name, slug: author.slug });
             });
         }
 
